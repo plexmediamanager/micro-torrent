@@ -1,0 +1,56 @@
+syntax = "proto3";
+package proto;
+
+service TorrentService {
+    // Application RPC methods
+    rpc ApplicationVersion(TorrentEmpty) returns (TorrentResponse) {}
+    rpc ApplicationAPIVersion(TorrentEmpty) returns (TorrentResponse) {}
+    rpc ApplicationBuildInformation(TorrentEmpty) returns (TorrentResponse) {}
+    rpc ApplicationPreferences(TorrentEmpty) returns (TorrentResponse) {}
+
+    // Log RPC methods
+    rpc LogEntries(TorrentOptions) returns (TorrentResponse) {}
+
+    // Torrents RPC methods
+    rpc TorrentList(TorrentEmpty) returns (TorrentResponse) {}
+    rpc TorrentProperties(TorrentString) returns (TorrentResponse) {}
+    rpc TorrentTrackers(TorrentString) returns (TorrentResponse) {}
+    rpc TorrentContents(TorrentString) returns (TorrentResponse) {}
+    rpc TorrentPiecesState(TorrentString) returns (TorrentResponse) {}
+    rpc TorrentPiecesHashes(TorrentString) returns (TorrentResponse) {}
+    rpc TorrentPause(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentResume(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentDelete(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentDeleteWithFiles(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentReCheck(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentReAnnounce(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentIncreasePriority(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentDecreasePriority(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentSetHighestPriority(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentSetLowestPriority(TorrentStrings) returns (TorrentEmpty) {}
+    rpc TorrentSetFilePriority(TorrentFilesPriority) returns (TorrentEmpty) {}
+}
+
+message TorrentEmpty {}
+
+message TorrentResponse {
+    bytes               result      =   1;
+}
+
+message TorrentOptions {
+    map<string,string>  options     =   1;
+}
+
+message TorrentString {
+    string              value       =   1;
+}
+
+message TorrentStrings {
+    repeated string     values      =   1;
+}
+
+message TorrentFilesPriority {
+    string              hash        =   1;
+    uint64              priority    =   2;
+    repeated string     files       =   3;
+}

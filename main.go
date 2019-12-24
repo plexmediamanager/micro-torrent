@@ -1,7 +1,11 @@
 package main
 
 import (
+    format "fmt"
     "github.com/micro/go-micro/client"
+    "github.com/plexmediamanager/micro-torrent/proto"
+    "github.com/plexmediamanager/micro-torrent/resolver"
+    "github.com/plexmediamanager/micro-torrent/torrent"
     "github.com/plexmediamanager/service"
     "github.com/plexmediamanager/service/log"
     "time"
@@ -25,6 +29,17 @@ func main() {
         client.Retries(30),
         client.RequestTimeout(1 * time.Second),
     )
+    if err != nil {
+        log.Panic(err)
+    }
+
+    torrentClient := torrent.Initialize()
+    err = torrentClient.Authenticate()
+    if err != nil {
+        format.Println(err)
+    }
+
+    err = proto.RegisterTorrentServiceHandler(application.Service().Server(), resolver.TorrentService{ Torrent: torrentClient })
     if err != nil {
         log.Panic(err)
     }
