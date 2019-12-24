@@ -5,6 +5,7 @@ import (
     microClient "github.com/micro/go-micro/client"
     "github.com/plexmediamanager/micro-torrent/errors"
     "github.com/plexmediamanager/micro-torrent/proto"
+    "github.com/plexmediamanager/service"
 )
 
 // Convert response to structure
@@ -20,5 +21,5 @@ func protoToStructure(output interface{}, result *proto.TorrentResponse, err err
 }
 
 func GetTorrentService(client microClient.Client) proto.TorrentService {
-    return proto.NewTorrentService("micro.torrent", client)
+    return proto.NewTorrentService(service.GetServiceName(service.TorrentServiceName), client)
 }
